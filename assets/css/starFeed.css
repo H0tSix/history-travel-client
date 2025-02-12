@@ -1,0 +1,85 @@
+html {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.back-link {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+}
+
+.post {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+
+.username {
+  font-size: 16px;
+}
+
+.verified-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.post-image {
+  width: 100%;
+  height: 300px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* 넘치는 부분 숨김 */
+}
+
+.post-body {
+  margin-top: 10px;
+}
+
+.hashtags {
+  color: #888;
+  font-size: 14px;
+}
+
+.comments {
+  margin-top: 10px;
+}
+
+.comments a {
+  text-decoration: none;
+  color: #888;
+  font-size: 14px;
+}
