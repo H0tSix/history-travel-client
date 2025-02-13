@@ -1,0 +1,237 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #fafafa;
+  color: #262626;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.pacifico-regular {
+  font-family: 'Pacifico', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 40px;
+}
+
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.login-box {
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 1px;
+  max-width: 350px;
+  width: 100%;
+  padding: 10px 40px;
+  margin-bottom: 10px;
+  transition: padding 0.3s ease;
+}
+
+.signup-box {
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 1px;
+  max-width: 350px;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin: 10px 0;
+  height: 70px;
+  opacity: 1;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+.instagram-logo {
+  margin: 36px 0;
+  text-align: center;
+}
+
+.instagram-logo img {
+  max-width: 175px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group {
+  position: relative;
+  transition: all 0.3s ease;
+  margin-bottom: 6px;
+  height: 44px;
+  opacity: 1;
+  overflow: hidden;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+.form-group[hidden] {
+  height: 0;
+  opacity: 0;
+  margin: 0;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+input {
+  width: 100%;
+  padding: 9px 8px;
+  background: #fafafa;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+input::placeholder {
+  color: #8e8e8e;
+}
+
+.login-button {
+  margin: 8px 0;
+  padding: 7px 16px;
+  background-color: #0095f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.login-button.active {
+  opacity: 1;
+}
+
+.social-login {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #385185;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  height: 40px;
+  opacity: 1;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+.social-login[hidden] {
+  height: 0;
+  opacity: 0;
+  margin: 0;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  color: #8e8e8e;
+  transition: all 0.3s ease;
+  height: 20px;
+  opacity: 1;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+.or-divider[hidden] {
+  height: 0;
+  opacity: 0;
+  margin: 0;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #dbdbdb;
+  margin: 0 16px;
+}
+
+.signup-box a {
+  color: #0095f6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  color: #8e8e8e;
+  font-size: 12px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.footer-links a {
+  color: #8e8e8e;
+  text-decoration: none;
+}
+
+.language-select {
+  margin-bottom: 10px;
+}
+
+.signup-box[hidden] {
+  height: 0;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  transform: scaleY(0);
+  border: none;
+  pointer-events: none;
+}
+
+.signup-description {
+  color: #8e8e8e;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: -10px 40px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 40px; /* 텍스트의 실제 높이 */
+  opacity: 1;
+  transform-origin: top;
+  transform: scaleY(1);
+  overflow: hidden;
+}
+
+.signup-description[hidden] {
+  height: 0;
+  opacity: 0;
+  margin: 0 40px;
+  transform: scaleY(0);
+  pointer-events: none;
+}
