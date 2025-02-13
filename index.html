@@ -1,9 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body></body>
+<html lang="ko">
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stargram</title>
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="login-box">
+      <div class="instagram-logo">
+        <text x="10" y="45" class="pacifico-regular">Stargram</text>
+      </div>
+      <div class="signup-description" hidden id="description">
+        친구들의 사진과 동영상을 보려면 가입하세요.
+      </div>
+      <form class="login-form" id="authForm">
+        <div class="form-group">
+          <input type="text" placeholder="이메일" id="email">
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="비밀번호" id="password">
+        </div>
+        <div class="form-group" hidden id="passwordConfirm">
+          <input type="password" placeholder="비밀번호 재입력">
+        </div>
+        <div class="form-group" hidden id="nickname">
+          <input type="text" placeholder="닉네임">
+        </div>
+        <button type="submit" class="login-button" id="submitButton">로그인</button>
+      </form>
+      <div class="or-divider" id="orDivider">또는</div>
+      <a href="#" class="social-login" id="kakaoLogin">
+        Kakao로 로그인
+      </a>
+    </div>
+    <div class="signup-box" id="signupBox">
+      계정이 없으신가요? <a href="#" id="signupLink">가입하기</a>
+    </div>
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/H0tSix">Organization</a>
+        <a href="https://github.com/H0tSix">Front Repo</a>
+        <a href="https://github.com/H0tSix">Backend Repo</a>
+      </div>
+      <div class="language-select">
+        한국어 © 2025 Stagram from HOtSix
+      </div>
+    </footer>
+  </div>
+</body>
+<script src="login.js" type="module"></script>
+
 </html>
