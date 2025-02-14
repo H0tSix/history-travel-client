@@ -89,17 +89,23 @@ async function main() {
         });
         console.log("📢 profile_image 값:", json.profileImage);
 
+        const formData = new FormData();
+        formData.append("star_name", text);
 
-        const response2 = await fetch(`${url}/star/createStarImage`, {
+        const imageResponse = await fetch(`http://localhost:3000/proxy?imgPath=${encodeURIComponent(json.profileImage)}`);
+        if (!imageResponse.ok) {
+          throw new Error('이미지 요청 실패');
+        }
+    
+        const imageBlob = await imageResponse.blob();
+        formData.append("file", imageBlob, "profile-image.png");
+
+        const response2 = await fetch(`${url}/star/createStorage`, {
           method: 'POST',
           headers: {
               'Authorization': `Bearer ${token}`,  // 인증 토큰을 헤더에 추가
-              'Content-Type': 'application/json'   // 전송할 데이터의 형식은 JSON
           },
-          body: JSON.stringify({
-              "star_name": text,
-              "profile_image": json.profileImage
-          })
+          body: formData,
         });
         
         const json2 = await response2.json(); // 응답을 JSON으로 변환
