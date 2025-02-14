@@ -2,29 +2,37 @@ async function main() {
     async function handleCC(event) {
       event.preventDefault(); // ✅ 기본 Form 제출 막기 (새로고침 방지)
   
-      // ✅ 로딩 스피너 표시
+      // // ✅ 로딩 스피너 표시
       const loadingSpinner = document.getElementById("loading-spinner");
       loadingSpinner.style.display = "block";
   
-      // ✅ 서버 API URL (로컬 서버로 변경)
-      const url = "http://localhost:3000/feed"; // 로컬 서버로 URL 변경
-      const formData = new FormData(document.querySelector("#ccForm"));
-      const text = formData.get("text").trim(); // 사용자가 입력한 위인의 이름 가져오기
-  
-      // ✅ 검색어가 없으면 요청하지 않음
-      if (!text) {
-        alert("검색할 위인의 이름을 입력하세요!");
-        loadingSpinner.style.display = "none";
-        return;
-      }
+      // // ✅ 서버 API URL (로컬 서버로 변경)
+      const url = "http://localhost:3000"; // 로컬 서버로 URL 변경
+      // const formData = new FormData(document.querySelector("#ccForm"));
+      // const text = formData.get("text").trim(); // 사용자가 입력한 위인의 이름 가져오기
+      const text = "이순신"   // 고쳐야 함
+      // // ✅ 검색어가 없으면 요청하지 않음
+      // if (!text) {
+      //   alert("검색할 위인의 이름을 입력하세요!");
+      //   loadingSpinner.style.display = "none";
+      //   return;
+      // }
   
       try {
-        // ✅ 서버에 요청 보내기 (POST 요청)
-        const response = await fetch(url, {
-          method: "POST",
-          body: JSON.stringify({ text }), // JSON 형식으로 변환하여 보냄
-          headers: { "Content-Type": "application/json" },
-          credentials: 'same-origin', // 로컬 서버로의 요청에 CORS 인증을 추가
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            console.error("로그인 정보가 없습니다. 토큰을 확인하세요.");
+            return;
+        }
+        const response = await fetch(`${url}/llm/createSI`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,  // 인증 토큰을 헤더에 추가
+              'Content-Type': 'application/json'   // 전송할 데이터의 형식은 JSON
+          },
+          body: JSON.stringify({
+              text
+          })
         });
   
         // ✅ 응답이 정상인지 확인
@@ -79,7 +87,24 @@ async function main() {
           achievementWrapper.appendChild(imageTag);
           imageContainer.appendChild(achievementWrapper);
         });
-  
+        console.log("📢 profile_image 값:", json.profileImage);
+
+
+        const response2 = await fetch(`${url}/star/createStarImage`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,  // 인증 토큰을 헤더에 추가
+              'Content-Type': 'application/json'   // 전송할 데이터의 형식은 JSON
+          },
+          body: JSON.stringify({
+              "star_name": text,
+              "profile_image": json.profileImage
+          })
+        });
+        
+        const json2 = await response2.json(); // 응답을 JSON으로 변환
+        console.log("📢 서버 응답 데이터:", json2); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
+
       } catch (error) {
         console.error("데이터 로딩 중 오류 발생:", error);
         alert("위인 정보를 불러오는 중 오류가 발생했습니다.");
