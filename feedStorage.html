@@ -14,27 +14,39 @@
 
     <div class="grid-container" id="gridContainer">
         <div class="grid-item">
-            <img src="./assets/images/00_img.jpeg" alt="이미지 1">
+            <a href="https://example.com/feed/1">
+                <img src="./assets/images/00_img.jpeg" alt="이미지 1">
+            </a>
             <p>세종대왕 폼 미쳤다</p>
         </div>
         <div class="grid-item">
-            <img src="./assets/images/00_img.jpeg" alt="이미지 2">
+            <a href="https://example.com/feed/2">
+                <img src="./assets/images/00_img.jpeg" alt="이미지 2">
+            </a>
             <p>최고다 이순신</p>
         </div>
         <div class="grid-item">
-            <img src="./assets/images/00_img.jpeg" alt="이미지 3">
+            <a href="https://example.com/feed/3">
+                <img src="./assets/images/00_img.jpeg" alt="이미지 3">
+            </a>
             <p>신사임당 그림 보러 가실?</p>
         </div>
         <div class="grid-item">
-            <img src="./assets/images/00_img.jpeg" alt="이미지 4">
+            <a href="https://example.com/feed/4">
+                <img src="./assets/images/00_img.jpeg" alt="이미지 4">
+            </a>
             <p>핫식스 폼 미쳤다</p>
         </div>
         <div class="grid-item">
-            <img src="./assets/images/00_img.jpeg" alt="이미지 5">
+            <a href="https://example.com/feed/5">
+                <img src="./assets/images/00_img.jpeg" alt="이미지 5">
+            </a>
             <p>이순신 살빼서 돌아옴</p>
         </div>
         <div class="grid-item">
-            <img src="./assets/images/00_img.jpeg" alt="이미지 6">
+            <a href="https://example.com/feed/6">
+                <img src="./assets/images/00_img.jpeg" alt="이미지 6">
+            </a>
             <p>당근에 새가방을 싸게 올렸는데 연락이..?</p>
         </div>
     </div>
@@ -69,12 +81,10 @@
                 }
 
                 const data = await response.json();
-                console.log(data);  // 데이터 확인
-
-                const feeds = data.data; // 응답에서 data 속성에 있는 피드 배열 가져오기
+                const feeds = data.data;
 
                 if (Array.isArray(feeds)) {
-                    renderFeeds(feeds);  // 배열이라면 renderFeeds 호출
+                    renderFeeds(feeds);
                 } else {
                     console.error('받은 데이터가 배열이 아닙니다:', feeds);
                 }
@@ -82,7 +92,6 @@
                 console.error("데이터를 불러오는 중 오류 발생:", error);
             }
         }
-
 
         function renderFeeds(feeds) {
             const container = document.getElementById("gridContainer");
@@ -93,7 +102,9 @@
                 item.classList.add("grid-item");
 
                 item.innerHTML = `
-                    <img src="${feed.feed_image}" alt="게시물 이미지">
+                    <a href="http://127.0.0.1:5500/dev/stargram-client/starFeed.html?${feed.fId}">
+                        <img src="${feed.feed_image}" alt="게시물 이미지">
+                    </a>
                     <p>${feed.feed_text}</p>
                 `;
 
@@ -114,6 +125,7 @@
                 }
             });
         }
+
         window.onload = function() {
             fetchFeeds();
         };
