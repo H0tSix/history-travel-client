@@ -1,0 +1,141 @@
+/* 기본 스타일 */
+.carousel-container {
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+.carousel-slide {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 유명인 정보 카드 스타일 */
+.person-card {
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+  margin: 20px auto;
+  width: 90%;
+  padding: 20px;
+}
+
+.person-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.portrait-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 3px solid #0095f6;
+}
+
+.portrait-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info-container {
+  width: 100%;
+}
+
+.figure-name {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.figure-meta p {
+  font-size: 16px;
+  margin: 5px 0;
+  color: #666;
+}
+
+.description-container {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+}
+
+/* 로딩 상태 스타일 */
+.loading-container {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 에러 상태 스타일 */
+.error-container {
+  text-align: center;
+  padding: 20px;
+  color: #e74c3c;
+}
+
+.retry-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.retry-button:hover {
+  background-color: #1877f2;
+}
+
+/* 기타 버튼 스타일 */
+.back-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.back-button:hover {
+  background-color: #f2f2f2;
+}

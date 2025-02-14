@@ -1,3 +1,5 @@
+import { StarContent } from './star.js';
+
 let map;
 let selectedPolygon = null;
 let selectedCountry = null;
@@ -226,11 +228,17 @@ document.addEventListener('DOMContentLoaded', function () {
   checkSelectDoneStatus();
 });
 
-// 선택 완료 버튼 클릭 이벤트
-selectDoneButton.addEventListener('click', function () {
+// map.js 파일의 selectDoneButton 이벤트 리스너 부분 수정
+selectDoneButton.addEventListener('click', async function () {
   if (selectedCountry && selectedYear) {
-    console.log(`선택된 국가: ${selectedCountry}, 연대: ${selectedYear}년대`);
-    // 여기에 다음 단계로 넘어가는 로직 추가
+    const starContentElement = document.getElementById('star-content');
+    const starContent = new StarContent(starContentElement);
+
+    // 지도 슬라이드 업
+    document.querySelector('.map-slide').classList.add('slide-up');
+
+    // 컨텐츠 로드
+    await starContent.loadContent(selectedCountry, selectedYear);
   }
 });
 

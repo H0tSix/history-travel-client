@@ -61,6 +61,13 @@ body {
   margin: 20px 0;
 }
 
+.slide-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .video-placeholder {
   border: 1px solid #dbdbdb;
   background-color: #fff;
@@ -70,36 +77,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  transition: transform 0.5s ease-in-out;
 }
 
-#chartdiv {
-  width: 100%;
-  height: 100%;
-}
-
-/* Leaflet 스타일 커스터마이징 */
-.leaflet-container {
-  background: #fff;
-}
-
-.country {
-  fill: #c6d4e1;
-  stroke: #fff;
-  stroke-width: 0.5;
-  transition: fill 0.3s;
-}
-
-.country:hover {
-  fill: #4a89dc;
-}
-
-.country.active {
-  fill: #4a89dc;
-}
-
-/* 지도 attribution 제거 */
-.leaflet-control-attribution {
-  display: none;
+.video-placeholder.slide-up {
+  transform: translateY(-100%);
 }
 
 #map {
@@ -158,4 +141,65 @@ body {
 
 .select-done.active:hover {
   background-color: #1877f2;
+}
+
+.content-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fafafa;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.content-slide.active {
+  transform: translateY(0);
+}
+
+/* 카드 관련 스타일 */
+.star-cards-container {
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  box-sizing: border-box;
+  background-color: #fafafa;
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  padding: px 0; /* 위아래 여백 동일하게 */
+}
+
+.person-card {
+  width: 90%;
+  height: 800px;
+  background: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+/* 스크롤 관련 스타일 */
+.star-cards-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.star-cards-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.star-cards-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
