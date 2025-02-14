@@ -57,15 +57,7 @@
             </div>
           </div>
 
-          <div class="comment-section">
-            <div class="comment">
-              <strong>Jeong woo</strong> <span>게시물 댓글</span>
-            </div>
-
-            <div class="reply">
-              <strong>King Sejong</strong> <span>게시물 답글</span>
-            </div>
-          </div>
+          <div class="comment-section"></div>
         </div>
       </div>
 
@@ -75,6 +67,8 @@
         data-uid=""
         data-fid=""
         data-sid=""
+        data-user=""
+        data-star=""
       >
         <input
           type="text"
@@ -83,6 +77,10 @@
           placeholder="댓글 달기..."
         />
       </form>
+    </div>
+    <div id="loading-mask" class="loading-mask">
+      <div class="loading-spinner"></div>
+      <p>답글 입력 중...</p>
     </div>
   </body>
   <script src="./assets/js/starFeed.js"></script>
