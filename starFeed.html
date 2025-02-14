@@ -28,35 +28,31 @@
           <div class="d-flex justify-content-between">
             <div>
               <img
-                src="./assets/images/00_img.jpeg"
-                alt=""
+                id="profile-img"
+                src=""
+                alt="Profile Image"
                 class="profile-img"
               />
-              <strong>King Sejong</strong>
+              <strong class="profile-name"></strong>
               <img src="./assets/images/badge.png" class="badge-img" />
             </div>
             <button class="back-btn">&larr;</button>
           </div>
 
-          <div class="card border-0 mt-3">
-            <img
-              src="./assets/images/00_img.jpeg"
-              class="post-img"
-              alt="게시물 이미지"
-            />
+          <div id="feed-container" class="card border-0 mt-3">
+            <img id="feed-img" class="post-img" alt="게시물 이미지" />
             <div class="card-body px-0">
               <div>
-                <strong style="display: inline">King Sejong</strong>
+                <strong class="profile-name" style="display: inline"></strong>
                 <img src="./assets/images/badge.png" class="badge-img" />
                 <p
+                  id="feed-text"
                   style="
                     display: inline;
                     word-break: break-word;
                     margin-left: 6px;
                   "
-                >
-                  게시글
-                </p>
+                ></p>
               </div>
             </div>
           </div>
@@ -73,9 +69,21 @@
         </div>
       </div>
 
-      <div class="comment-container custom-container">
-        <input type="text" class="comment-input" placeholder="댓글 달기..." />
-      </div>
+      <form
+        id="comment-form"
+        class="comment-container custom-container"
+        data-uid=""
+        data-fid=""
+        data-sid=""
+      >
+        <input
+          type="text"
+          name="comment"
+          class="comment-input"
+          placeholder="댓글 달기..."
+        />
+      </form>
     </div>
   </body>
+  <script src="./assets/js/starFeed.js"></script>
 </html>
