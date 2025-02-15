@@ -18,6 +18,8 @@ async function getLatestStarName() {
 async function handleCC(event) {
     if (event) event.preventDefault(); // ✅ 기본 Form 제출 막기 (새로고침 방지)
 
+    console.log("✅ handleCC 함수 시작됨!");
+
     // ✅ 로딩 스피너 요소 가져오기
     const loadingSpinner = document.getElementById("loading-spinner");
     if (loadingSpinner) loadingSpinner.style.display = "block"; // 🔹 로딩 UI 활성화
@@ -31,22 +33,37 @@ async function handleCC(event) {
     try {
         // ✅ 로컬 스토리지에서 사용자 인증 토큰 가져오기
         const token = localStorage.getItem('authToken');
+
         if (!token) {
-            console.error("로그인 정보가 없습니다. 토큰을 확인하세요.");
+            console.error("❌ 인증 실패: 토큰이 없습니다. 로그인 후 다시 시도하세요.");
+            alert("로그인이 필요합니다. 로그인 후 다시 시도하세요.");
+            return;  // 요청 중단
+        }
+
+        // ✅ 올바른 `Authorization` 헤더 추가
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Bearer 형식 유지
+        };
+
+        // ✅ 서버에 최신 스타 이름을 POST 요청으로 전달하여 결과 가져오기
+        console.log("📢 `llm/createSI` API 요청을 보냅니다. 요청 데이터:", text);
+
+        const response = await fetch(`${url}/llm/createSI`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({ text })
+        });
+
+        // ✅ 서버 응답 상태 확인
+        console.log("🔹 서버 응답 상태 코드:", response.status);
+
+        if (response.status === 401) {
+            console.error("❌ 인증 오류: 유효하지 않은 토큰이거나 만료된 토큰입니다.");
+            alert("로그인이 필요하거나, 세션이 만료되었습니다. 다시 로그인하세요.");
             return;
         }
 
-        // ✅ 서버에 최신 스타 이름을 POST 요청으로 전달하여 결과 가져오기
-        const response = await fetch(`${url}/llm/createSI`, {
-            method: 'POST',  // ✅ HTTP POST 요청
-            headers: {
-                'Authorization': `Bearer ${token}`,  // 🔹 인증 토큰 추가 (JWT 등)
-                'Content-Type': 'application/json'  // 🔹 JSON 데이터 전송
-            },
-            body: JSON.stringify({ text })  // ✅ Supabase에서 가져온 최신 스타 이름을 전송
-        });
-
-        // ✅ 응답 상태 확인
         if (!response.ok) {
             throw new Error(`서버 응답 오류: ${response.status}`);
         }
@@ -54,6 +71,7 @@ async function handleCC(event) {
         // ✅ JSON 데이터 변환
         const json = await response.json();
         console.log("📢 서버 응답 데이터:", json);
+
 
         // ✅ 응답 데이터 유효성 검사
         if (!json || !json.achievements || !Array.isArray(json.achievements)) {
