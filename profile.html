@@ -21,8 +21,6 @@
   <div class="container d-flex align-items-center" style="padding-left: 20px;">
     <h1 class="pacifico-regular">Stargram</h1>
   </div>
-  
-</div>
 
 
   <hr class="my-0" />
@@ -68,42 +66,6 @@
   <!-- Bootstrap JS 추가 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ✅ profile.js가 없을 경우 동적으로 생성 -->
-  <script type="module">
-    console.log("✅ profile.js 실행됨");
-
-    // ✅ Supabase 연결
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm";
-
-    // ✅ Supabase 설정
-    const supabaseUrl = "https://your-supabase-url.supabase.co";  // 🔹 환경변수에서 불러올 수도 있음
-    const supabaseKey = "your-anon-key";  
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // ✅ 최신 스타 자동 로드
-    // ✅ profile.html에서 최신 스타 불러오는 코드
-    async function loadLatestStar() {
-        console.log("📢 백엔드 API에서 최신 스타 불러오는 중...");
-
-        try {
-            const response = await fetch("http://localhost:3000/pf_star/latest");
-            const data = await response.json();
-
-            if (!response.ok || !data.star_name) {
-                throw new Error("스타 데이터를 불러올 수 없음");
-            }
-
-            console.log("✅ 최신 스타:", data.star_name);
-            document.getElementById("profile-name").textContent = data.star_name;
-        } catch (error) {
-            console.error("❌ 스타 데이터 가져오기 실패:", error);
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", loadLatestStar);
-
-
-  </script>
 
 </body>
 </html>
