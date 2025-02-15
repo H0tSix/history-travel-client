@@ -2,21 +2,26 @@ async function main() {
   async function handleCC() {
     console.log("📢 handleCC 함수 실행됨"); // 실행 여부 확인용
 
-    // // ✅ 로딩 스피너 표시
+     // ✅✅✅  ----------------------------------
+     // ✅✅✅ 민호님이 알려주시면 바꿔야 하는 부분
+     // ✅✅✅ localStorage에서 "starName" 값을 가져오기
+     const text = localStorage.getItem("starName") || "";
+
+     if (!text) {
+       alert("위인 이름이 제공되지 않았습니다.");
+       return;
+     }
+    //-------------------------------------------
+
+    // ✅ 로딩 스피너 표시
     const loadingSpinner = document.getElementById("loading-spinner");
     loadingSpinner.style.display = "block";
 
-    // // ✅ 서버 API URL (로컬 서버로 변경)
+    // ✅ 서버 API URL (로컬 서버로 변경)
     const url = "http://localhost:3000"; // 로컬 서버로 URL 변경
-    // const formData = new FormData(document.querySelector("#ccForm"));
-    // const text = formData.get("text").trim(); // 사용자가 입력한 위인의 이름 가져오기
-    const text = "선덕여왕"   // 고쳐야 함
-    // // ✅ 검색어가 없으면 요청하지 않음
-    // if (!text) {
-    //   alert("검색할 위인의 이름을 입력하세요!");
-    //   loadingSpinner.style.display = "none";
-    //   return;
-    // }
+    
+    //하드코딩
+    //const text = "선덕여왕"   // 고쳐야 함
 
     try {
       const token = localStorage.getItem('authToken');
@@ -57,6 +62,7 @@ async function main() {
       // ✅ 🔥 프로필 이미지 업데이트
       const profileImageTag = document.getElementById("profile-image");
       profileImageTag.src = json.profileImage || "default-profile.png"; // 기본 프로필 이미지
+      
       profileImageTag.onerror = () => {
         console.error("❌ 프로필 이미지 로드 실패:", json.profileImage);
         profileImageTag.src = "default-profile.png"; // 기본 프로필 이미지로 대체
@@ -142,7 +148,6 @@ async function main() {
     }
   }
 
-//   document.querySelector("#ccForm").addEventListener("submit", handleCC);
   await handleCC();
  }
 

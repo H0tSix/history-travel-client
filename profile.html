@@ -40,19 +40,39 @@
       <!-- 프로필 정보 -->
       <div class="profile-info ms-4">
         <div class="d-flex align-items-center">
-          <h2 id="profile-name" class="fw-bold">위인의 이름 불러오는 중...</h2>  <!-- ✅ Supabase에서 데이터 표시 -->
-          <button class="btn btn-primary btn-follow ms-3">팔로우</button>
-          <button class="btn btn-light btn-message ms-2">메시지 보내기</button>
+          <h2 id="profile-name" class="fw-bold">위인의 이름 불러오는 중...</h2>
+
+          <script>
+            // ✅✅✅ -----------------------------------------
+            // ✅✅✅ 나중에 민호님이 알려주시면 여기 수정하기
+            // ✅✅✅ URL에서 "name" 파라미터 가져오기
+            const params = new URLSearchParams(window.location.search);
+            const starName = params.get("name");
+            
+            // ✅✅✅ 
+            // ✅✅✅ 나중에 민호님이 알려주시면 여기 수정하기
+            // ✅✅✅ 위인 이름을 localStorage에 저장 (app.js에서 사용하기 위해)
+            if (starName) {
+              localStorage.setItem("starName", starName);
+            } //------------------------------------------------------
+          </script>
+
+
+
+          <button class="btn btn-primary btn-follow">팔로우</button>
+          <button class="btn btn-light btn-message">메시지 보내기</button>
+
         </div>
         <p id="profile-desc" class="text-muted">위인에 대한 설명</p>
 
         <!-- 프로필 통계 -->
         <div class="profile-stats d-flex gap-3">
-          <span><strong id="post-count">7</strong> 게시물</span>
-          <span><strong id="follower-count">7</strong> 팔로워</span>
-          <span><strong id="following-count">7</strong> 팔로잉</span>
+          <span>게시물 <strong id="post-count">7</strong></span>
+          <span>팔로워 <strong id="follower-count">7</strong></span>
+          <span>팔로잉 <strong id="following-count">7</strong></span>
         </div>
       </div>
+      
     </div>
     
     <hr>
