@@ -41,7 +41,7 @@ async function main() {
       }
 
       const json = await response.json(); // 응답을 JSON으로 변환
-      console.log("📢 서버 응답 데이터:", json); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
+      console.log("📢 서버 응답 데이터1:", json); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
 
       // ✅ json이 제대로 생성되지 않았을 경우 대비
       if (!json || !json.achievements || !Array.isArray(json.achievements)) {
@@ -83,7 +83,7 @@ async function main() {
       });
       
       const json2 = await response2.json(); // 응답을 JSON으로 변환
-      console.log("📢 서버 응답 데이터:", json2); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
+      console.log("📢 서버 응답 데이터2:", json2); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
 
       // ✅ 🔥 업적 이미지 표시 영역 초기화 후 추가
       const imageContainer = document.getElementById("image-container");
@@ -96,42 +96,51 @@ async function main() {
         const achievementTitle = document.createElement("h5");
         achievementTitle.textContent = `${index + 1}. ${achievement || "업적 정보 없음"}`;
 
+        
         const imageTag = document.createElement("img");
         imageTag.classList.add("img-fluid", "mt-3", "achievement-image");
         imageTag.src = imageUrl || "default-image.png";
         imageTag.alt = achievement || `업적 이미지 ${index + 1}`;
-
+        
         imageTag.onerror = () => {
           console.error("❌ 업적 이미지 로드 실패:", imageUrl);
           imageTag.src = "default-image.png"; // 기본 이미지 대체
         };
-
-        achievementWrapper.appendChild(achievementTitle);
-        achievementWrapper.appendChild(imageTag);
-        imageContainer.appendChild(achievementWrapper);
-
+        
+        
         const formData2 = new FormData();
         formData2.append("feed_text", achievementTitle.textContent);
         formData2.append("sId", json2.sId);
-    
+        
         const imageResponse2 = await fetch(`http://localhost:3000/proxy?imgPath=${encodeURIComponent(imageUrl)}`);
         if (!imageResponse2.ok) {
           throw new Error('이미지 요청 실패');
         }
-    
+        
         const imageBlob2 = await imageResponse2.blob();
         formData2.append("file", imageBlob2, "feed-image.png");
-  
+        
         const response3 = await fetch(`${url}/feed/createFeed`, {
           method: 'POST',
           headers: {
-              'Authorization': `Bearer ${token}`,  // 인증 토큰을 헤더에 추가
+            'Authorization': `Bearer ${token}`,  // 인증 토큰을 헤더에 추가
           },
           body: formData2,
         });
         
         const json3 = await response3.json(); // 응답을 JSON으로 변환
-        console.log("📢 서버 응답 데이터:", json3); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
+        console.log("📢 서버 응답 데이터3:", json3); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
+
+        const fId = json3.fId[0].fId; // 서버에서 받은 sId 값 사용
+        const linkUrl = `http://127.0.0.1:5500/dev/stargram-client/starFeed.html?fId=${fId}`;
+
+        const imageLink = document.createElement("a");
+        imageLink.href = linkUrl;
+        achievementWrapper.appendChild(imageLink);
+        imageLink.appendChild(imageTag);
+        achievementWrapper.appendChild(achievementTitle);
+        // achievementWrapper.appendChild(imageTag);
+        imageContainer.appendChild(achievementWrapper);
       };
 
 
