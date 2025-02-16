@@ -112,7 +112,18 @@ input::placeholder {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  opacity: 0.7;
+  transition: all 0.3s ease; /* 부드러운 전환 효과 추가 */
+}
+
+.login-button:disabled {
+  background-color: #b2dffc; /* 비활성화 상태일 때 밝은 파란색 */
+  cursor: not-allowed; /* 비활성화 상태일 때 커서 변경 */
+}
+
+/* active 클래스가 없을 때의 스타일 */
+.login-button:not(.active) {
+  background-color: #b2dffc;
+  cursor: not-allowed;
 }
 
 .login-button.active {
@@ -234,4 +245,23 @@ input::placeholder {
   margin: 0 40px;
   transform: scaleY(0);
   pointer-events: none;
+}
+
+.error-message {
+  color: #ed4956;
+  font-size: 12px;
+  margin: 0 0 10px 8px;
+  line-height: 14px;
+}
+
+.form-group {
+  position: relative;
+  transition: all 0.3s ease;
+  margin-bottom: 6px;
+  height: auto; /* 수정: 에러 메시지를 위한 공간 확보 */
+  min-height: 44px;
+  opacity: 1;
+  overflow: visible; /* 수정: 에러 메시지가 보이도록 */
+  transform-origin: top;
+  transform: scaleY(1);
 }

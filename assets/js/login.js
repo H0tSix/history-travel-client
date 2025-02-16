@@ -22,6 +22,71 @@ document.addEventListener('DOMContentLoaded', () => {
   nickname.style.opacity = '0';
 });
 
+// 에러 메시지 처리 함수
+function handleErrorMessage(inputElement, message, isError) {
+  const formGroup = inputElement.closest('.form-group');
+  let errorDiv = formGroup.querySelector('.error-message');
+
+  if (isError) {
+    if (!errorDiv) {
+      errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      formGroup.appendChild(errorDiv);
+    }
+    errorDiv.textContent = message;
+  } else if (errorDiv) {
+    errorDiv.remove();
+  }
+}
+
+// 이메일 유효성 검사
+function validateEmail(email) {
+  const pattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+  return pattern.test(email);
+}
+
+// 폼 유효성 검사 및 버튼 상태 업데이트
+function updateFormValidation() {
+  const isSignupMode = submitButton.textContent === '가입하기';
+  let isValid = true;
+
+  // 이메일 검사
+  if (emailInput.value) {
+    const isValidEmail = validateEmail(emailInput.value);
+    handleErrorMessage(emailInput, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
+    isValid = isValid && isValidEmail;
+  }
+
+  // 회원가입 모드일 때 추가 검증
+  if (isSignupMode) {
+    const passwordValue = passwordInput.value;
+    const confirmValue = passwordConfirm.querySelector('input').value;
+
+    if (passwordValue && confirmValue) {
+      const passwordsMatch = passwordValue === confirmValue;
+      handleErrorMessage(passwordConfirm.querySelector('input'), '비밀번호가 일치하지 않습니다.', !passwordsMatch);
+      isValid = isValid && passwordsMatch;
+    }
+
+    // 모든 필수 입력값 확인
+    const requiredInputs = [emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')];
+
+    isValid = isValid && requiredInputs.every(input => input && input.value.length > 0);
+  } else {
+    // 로그인 모드일 때는 이메일과 비밀번호만 확인
+    isValid = isValid && emailInput.value && passwordInput.value;
+  }
+
+  // 버튼 상태 업데이트
+  if (isValid) {
+    submitButton.classList.add('active');
+    submitButton.disabled = false;
+  } else {
+    submitButton.classList.remove('active');
+    submitButton.disabled = true;
+  }
+}
+
 // 회원가입 함수
 async function signup(email, password, nickname) {
   try {
@@ -156,6 +221,16 @@ function toggleSignupMode(e) {
       nickname.hidden = true;
     }, 300);
   }
+
+  // 모드 전환 시 에러 메시지 초기화
+  [emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')].forEach(input => {
+    if (input) {
+      handleErrorMessage(input, '', false);
+    }
+  });
+
+  // 버튼 상태 업데이트
+  updateFormValidation();
 }
 
 // form submit 이벤트 핸들러
@@ -165,17 +240,10 @@ authForm.addEventListener('submit', async e => {
   const isSignupMode = submitButton.textContent === '가입하기';
   const email = emailInput.value;
   const password = passwordInput.value;
-  const nicknameValue = isSignupMode ? nickname.querySelector('input').value : email; // 로그인시에는 email 필드를 uId로 사용
+  const nicknameValue = isSignupMode ? nickname.querySelector('input').value : email;
 
   try {
     if (isSignupMode) {
-      // 회원가입 모드
-      const passwordConfirmValue = passwordConfirm.querySelector('input').value;
-      if (password !== passwordConfirmValue) {
-        alert('비밀번호가 일치하지 않습니다.');
-        return;
-      }
-
       const result = await signup(email, password, nicknameValue);
       if (result.message === '회원가입 성공') {
         alert('회원가입이 완료되었습니다. 로그인해주세요.');
@@ -207,22 +275,10 @@ authForm.addEventListener('submit', async e => {
 // 이벤트 리스너
 signupLink.addEventListener('click', toggleSignupMode);
 
-// 버튼 상태 업데이트 함수
-function updateButtonState() {
-  const isSignupMode = submitButton.textContent === '가입하기';
-  const requiredInputs = isSignupMode ? [emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')] : [emailInput, passwordInput];
-
-  const isValid = requiredInputs.every(input => input && input.value.length > 0);
-  if (isValid) {
-    submitButton.classList.add('active');
-  } else {
-    submitButton.classList.remove('active');
-  }
-}
-
-// 모든 입력 필드에 이벤트 리스너 추가
+// 입력 필드 이벤트 리스너 등록
 [emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')].forEach(input => {
   if (input) {
-    input.addEventListener('input', updateButtonState);
+    input.addEventListener('input', updateFormValidation);
+    input.addEventListener('blur', updateFormValidation);
   }
 });
