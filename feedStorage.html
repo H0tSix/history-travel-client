@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>탐색 페이지</title>
+    <link rel="stylesheet" href="./assets/css/feedStorage.css" />
+  </head>
+  <body>
+    <div class="search-bar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="검색"
+        onkeyup="searchPosts()"
+      />
+    </div>
+
+    <div class="grid-container" id="gridContainer"></div>
+
+    <div class="nav-bar">
+      <a href="#">🏠</a>
+      <a href="#">🔍</a>
+      <a href="#">➕</a>
+      <a href="#">💬</a>
+      <a href="#">👤</a>
+    </div>
+
+    <script>
+      async function fetchFeeds() {
+        try {
+          const token = localStorage.getItem("authToken");
+          if (!token) {
+            console.error("로그인 정보가 없습니다. 토큰을 확인하세요.");
+            return;
+          }
+
+          const response = await fetch("http://localhost:3000/feed/getFeeds", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("서버에서 데이터를 불러오는 데 실패했습니다.");
+          }
+
+          const data = await response.json();
+          const feeds = data.data;
+
+          if (Array.isArray(feeds)) {
+            renderFeeds(feeds);
+          } else {
+            console.error("받은 데이터가 배열이 아닙니다:", feeds);
+          }
+        } catch (error) {
+          console.error("데이터를 불러오는 중 오류 발생:", error);
+        }
+      }
+
+      function renderFeeds(feeds) {
+        const container = document.getElementById("gridContainer");
+        container.innerHTML = "";
+
+        // 최대 60개의 게시물만 표시
+        const limitedFeeds = feeds.reverse().slice(0, 60);  // 최신 게시물부터 60개만 선택
+
+        limitedFeeds.forEach((feed) => {
+            const item = document.createElement("div");
+            item.classList.add("grid-item");
+
+            item.innerHTML = `
+            <a href="./starFeed.html?fId=${feed.fId}">
+                <img src="${feed.imageUrl}" alt="게시물 이미지">
+            </a>
+            <p>${feed.feed_text}</p>
+            `;
+
+            container.appendChild(item);
+        });
+      }
+
+
+      function searchPosts() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let items = document.querySelectorAll(".grid-item");
+
+        items.forEach((item) => {
+          let title = item.querySelector("p").textContent.toLowerCase();
+          if (title.includes(input)) {
+            item.classList.remove("hidden");
+          } else {
+            item.classList.add("hidden");
+          }
+        });
+      }
+
+      window.onload = function () {
+        fetchFeeds();
+      };
+    </script>
+  </body>
+</html>

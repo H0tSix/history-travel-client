@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stargram</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/starFeed.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav
+        class="navbar navbar-expand-lg"
+        style="border-bottom: 1px solid #ddd"
+      >
+        <div class="custom-container w-100 d-flex align-items-center">
+          <div class="navbar-brand" href="#">
+            <text class="pacifico-regular">Stargram</text>
+          </div>
+        </div>
+      </nav>
+
+      <div class="content">
+        <div class="custom-container my-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <img
+                id="profile-img"
+                src=""
+                alt="Profile Image"
+                class="profile-img"
+              />
+              <strong class="profile-name"></strong>
+              <img src="./assets/images/badge.png" class="badge-img" />
+            </div>
+            <button id="back-btn" class="back-btn">&larr;</button>
+          </div>
+
+          <div id="feed-container" class="card border-0 mt-3">
+            <img id="feed-img" class="post-img" alt="게시물 이미지" />
+            <div class="card-body px-0">
+              <div>
+                <strong class="profile-name" style="display: inline"></strong>
+                <img src="./assets/images/badge.png" class="badge-img" />
+                <p
+                  id="feed-text"
+                  style="
+                    display: inline;
+                    word-break: break-word;
+                    margin-left: 6px;
+                  "
+                ></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comment-section"></div>
+        </div>
+      </div>
+
+      <form
+        id="comment-form"
+        class="comment-container custom-container"
+        data-uid=""
+        data-fid=""
+        data-sid=""
+        data-user=""
+        data-star=""
+        data-profile_image=""
+      >
+        <input
+          type="text"
+          name="comment"
+          class="comment-input"
+          placeholder="댓글 달기..."
+        />
+      </form>
+    </div>
+    <div id="loading-mask" class="loading-mask">
+      <div class="loading-spinner"></div>
+      <p>답글 입력 중...</p>
+    </div>
+  </body>
+  <script src="./assets/js/starFeed.js"></script>
+</html>
