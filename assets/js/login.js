@@ -50,15 +50,13 @@ function updateFormValidation() {
   const isSignupMode = submitButton.textContent === '가입하기';
   let isValid = true;
 
-  // 이메일 검사
-  if (emailInput.value) {
-    const isValidEmail = validateEmail(emailInput.value);
-    handleErrorMessage(emailInput, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
-    isValid = isValid && isValidEmail;
-  }
-
   // 회원가입 모드일 때 추가 검증
   if (isSignupMode) {
+    if (emailInput.value) {
+      const isValidEmail = validateEmail(emailInput.value);
+      handleErrorMessage(emailInput, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
+      isValid = isValid && isValidEmail;
+    }
     const passwordValue = passwordInput.value;
     const confirmValue = passwordConfirm.querySelector('input').value;
 
@@ -111,7 +109,7 @@ async function signup(email, password, nickname) {
 }
 
 // 로그인 함수
-async function login(nickname, password) {
+async function login(email, password) {
   try {
     const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
@@ -119,14 +117,14 @@ async function login(nickname, password) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        uId: nickname,
+        uId: email, // email을 uId로 사용
         password: password,
       }),
     });
 
     const data = await response.json();
+    console.log(data);
 
-    // 로그인 성공 시 JWT 토큰을 로컬 스토리지에 저장
     if (data.token) {
       localStorage.setItem('authToken', data.token);
       return { success: true, message: data.message };
@@ -240,14 +238,13 @@ authForm.addEventListener('submit', async e => {
   const isSignupMode = submitButton.textContent === '가입하기';
   const email = emailInput.value;
   const password = passwordInput.value;
-  const nicknameValue = isSignupMode ? nickname.querySelector('input').value : email;
 
   try {
     if (isSignupMode) {
+      const nicknameValue = nickname.querySelector('input').value;
       const result = await signup(email, password, nicknameValue);
       if (result.message === '회원가입 성공') {
         alert('회원가입이 완료되었습니다. 로그인해주세요.');
-        // 회원가입 성공 시 로그인 모드로 전환
         toggleSignupMode();
         // 입력 필드 초기화
         emailInput.value = '';
@@ -258,8 +255,8 @@ authForm.addEventListener('submit', async e => {
         alert(result.message || '회원가입 실패');
       }
     } else {
-      // 로그인 모드
-      const result = await login(nicknameValue, password);
+      // 로그인 모드 - email을 uId로 사용
+      const result = await login(email, password); // email을 uId로 전달
       if (result.success) {
         window.location.href = '/map.html';
       } else {
