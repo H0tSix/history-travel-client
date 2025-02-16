@@ -9,11 +9,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function loadFeedData() {
-  const id = sessionStorage.getItem("id") || 1;
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("fId");
 
-  console.log(id);
-  console.log(token);
-  const response = await fetch(`${url}/feed/getFeed?id=${id}`, {
+  const response = await fetch(`${url}/feed_coment/getFeed/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -24,6 +23,7 @@ async function loadFeedData() {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
   const data = await response.json();
+
   const { fId, feed_text, feed_image, STAR } = data;
   const { sId, star_name, profile_image, USER } = STAR;
   const { id: userId, uId } = USER;
@@ -41,6 +41,7 @@ async function loadFeedData() {
   commentForm.dataset.sid = sId;
   commentForm.dataset.user = uId;
   commentForm.dataset.star = star_name;
+  commentForm.dataset.profile_image = profile_image;
 }
 
 async function loadFeedCommentData() {
@@ -48,7 +49,7 @@ async function loadFeedCommentData() {
   if (!fId) return;
 
   try {
-    const response = await fetch(`${url}/feed/getComment?fId=${fId}`, {
+    const response = await fetch(`${url}/feed_coment/getComment?fId=${fId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,8 +67,8 @@ async function loadFeedCommentData() {
 
     const user = commentForm.dataset.user;
     const star = commentForm.dataset.star;
-    const profile_image1 = "./assets/images/user_profile.png";
-    const profile_image2 = "./assets/images/00_img.jpeg";
+    const profile_image = commentForm.dataset.profile_image;
+    const user_image = "./assets/images/user_profile.png";
     const commentMap = new Map();
 
     comments.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
@@ -78,7 +79,7 @@ async function loadFeedCommentData() {
       if (parent_id === null) {
         newComment.classList.add("comment");
         newComment.innerHTML = `
-          <img src="${profile_image1}" alt="Profile" class="profile-img">
+          <img src="${user_image}" alt="Profile" class="profile-img">
           <strong>${user}</strong> <span>${coment}</span>
         `;
 
@@ -87,7 +88,7 @@ async function loadFeedCommentData() {
       } else {
         newComment.classList.add("reply");
         newComment.innerHTML = `
-          <img src="${profile_image2}" alt="Profile" class="profile-img">
+          <img src="${profile_image}" alt="Profile" class="profile-img">
           <strong>${star}</strong> <span>${coment}</span>
         `;
 
@@ -106,7 +107,7 @@ async function loadFeedCommentData() {
 
 async function feedCommentChatAdd(fcId, fId, uId, sId, comment, star) {
   try {
-    const response = await fetch(`${url}/feed/addCommetChat`, {
+    const response = await fetch(`${url}/feed_coment/addCommetChat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +140,7 @@ commentForm.addEventListener("submit", async (event) => {
   const star = commentForm.dataset.star;
 
   try {
-    const response = await fetch(`${url}/feed/addComment`, {
+    const response = await fetch(`${url}/feed_coment/addComment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
