@@ -66,7 +66,7 @@ async function main() {
       const formData = new FormData();
       formData.append("star_name", text);
 
-      const imageResponse = await fetch(`http://localhost:3000/proxy?imgPath=${encodeURIComponent(json.profileImage)}`);
+      const imageResponse = await fetch(`${url}/proxy?imgPath=${encodeURIComponent(json.profileImage)}`);
       if (!imageResponse.ok) {
         throw new Error('이미지 요청 실패');
       }
@@ -112,7 +112,7 @@ async function main() {
         formData2.append("feed_text", achievementTitle.textContent);
         formData2.append("sId", json2.sId);
         
-        const imageResponse2 = await fetch(`http://localhost:3000/proxy?imgPath=${encodeURIComponent(imageUrl)}`);
+        const imageResponse2 = await fetch(`${url}/proxy?imgPath=${encodeURIComponent(imageUrl)}`);
         if (!imageResponse2.ok) {
           throw new Error('이미지 요청 실패');
         }
@@ -132,7 +132,7 @@ async function main() {
         console.log("📢 서버 응답 데이터3:", json3); // 🔥 서버에서 받은 데이터 확인 (디버깅용)
 
         const fId = json3.fId[0].fId; // 서버에서 받은 sId 값 사용
-        const linkUrl = `http://127.0.0.1:5500/dev/stargram-client/starFeed.html?fId=${fId}`;
+        const linkUrl = `./starFeed.html?fId=${fId}`;
 
         const imageLink = document.createElement("a");
         imageLink.href = linkUrl;
