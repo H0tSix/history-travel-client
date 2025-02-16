@@ -2,7 +2,7 @@ const BASE_URL = 'http://localhost:3000';
 
 const authForm = document.getElementById('authForm');
 const submitButton = document.getElementById('submitButton');
-const emailInput = document.getElementById('email');
+const email = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const passwordConfirm = document.getElementById('passwordConfirm');
 const nickname = document.getElementById('nickname');
@@ -15,11 +15,11 @@ const description = document.getElementById('description');
 // 초기 스타일 설정
 document.addEventListener('DOMContentLoaded', () => {
   passwordConfirm.style.transform = 'scaleY(0)';
-  nickname.style.transform = 'scaleY(0)';
+  email.style.transform = 'scaleY(0)';
   passwordConfirm.style.height = '0';
-  nickname.style.height = '0';
+  email.style.height = '0';
   passwordConfirm.style.opacity = '0';
-  nickname.style.opacity = '0';
+  email.style.opacity = '0';
 
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
@@ -70,14 +70,15 @@ function validateEmail(email) {
 function updateFormValidation() {
   const isSignupMode = submitButton.textContent === '가입하기';
   let isValid = true;
-  if (emailInput.value) {
-    const isValidEmail = validateEmail(emailInput.value);
-    handleErrorMessage(emailInput, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
-    isValid = isValid && isValidEmail;
-  }
 
   // 회원가입 모드일 때 추가 검증
   if (isSignupMode) {
+    const emailValue = email.querySelector('input');
+    if (emailValue.value) {
+      const isValidEmail = validateEmail(emailValue.value);
+      handleErrorMessage(email, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
+      isValid = isValid && isValidEmail;
+    }
     const passwordValue = passwordInput.value;
     const confirmValue = passwordConfirm.querySelector('input').value;
 
@@ -88,12 +89,12 @@ function updateFormValidation() {
     }
 
     // 모든 필수 입력값 확인
-    const requiredInputs = [emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')];
+    const requiredInputs = [email.querySelector('input'), passwordInput, passwordConfirm.querySelector('input'), nickname];
 
     isValid = isValid && requiredInputs.every(input => input && input.value.length > 0);
   } else {
     // 로그인 모드일 때는 이메일과 비밀번호만 확인
-    isValid = isValid && emailInput.value && passwordInput.value;
+    isValid = isValid && nickname.value && passwordInput.value;
   }
 
   // 버튼 상태 업데이트
@@ -130,7 +131,9 @@ async function signup(email, password, nickname) {
 }
 
 // 로그인 함수
-async function login(email, password) {
+async function login(uId, password) {
+  console.log(uId);
+
   try {
     const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
@@ -138,8 +141,8 @@ async function login(email, password) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        uId: email, // email을 uId로 사용
-        password: password,
+        uId,
+        password,
       }),
     });
 
@@ -196,7 +199,7 @@ function toggleSignupMode(e) {
     requestAnimationFrame(() => {
       // 먼저 요소들을 보이게 만들고
       passwordConfirm.hidden = false;
-      nickname.hidden = false;
+      email.hidden = false;
       description.hidden = false;
 
       // 다음 프레임에서 애니메이션 시작
@@ -207,11 +210,11 @@ function toggleSignupMode(e) {
         description.style.margin = '-10px 40px 20px';
 
         passwordConfirm.style.transform = 'scaleY(1)';
-        nickname.style.transform = 'scaleY(1)';
+        email.style.transform = 'scaleY(1)';
         passwordConfirm.style.height = '44px';
-        nickname.style.height = '44px';
+        email.style.height = '44px';
         passwordConfirm.style.opacity = '1';
-        nickname.style.opacity = '1';
+        email.style.opacity = '1';
       });
     });
   } else {
@@ -227,22 +230,22 @@ function toggleSignupMode(e) {
         description.style.margin = '0 40px';
 
         passwordConfirm.style.transform = 'scaleY(0)';
-        nickname.style.transform = 'scaleY(0)';
+        email.style.transform = 'scaleY(0)';
         passwordConfirm.style.height = '0';
-        nickname.style.height = '0';
+        email.style.height = '0';
         passwordConfirm.style.opacity = '0';
-        nickname.style.opacity = '0';
+        email.style.opacity = '0';
       });
     });
 
     setTimeout(() => {
       passwordConfirm.hidden = true;
-      nickname.hidden = true;
+      email.hidden = true;
     }, 300);
   }
 
   // 모드 전환 시 에러 메시지 초기화
-  [emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')].forEach(input => {
+  [email.querySelector('input'), passwordInput, passwordConfirm.querySelector('input'), nickname].forEach(input => {
     if (input) {
       handleErrorMessage(input, '', false);
     }
@@ -257,27 +260,26 @@ authForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   const isSignupMode = submitButton.textContent === '가입하기';
-  const email = emailInput.value;
+  const emailValue = email.querySelector('input');
   const password = passwordInput.value;
 
   try {
     if (isSignupMode) {
-      const nicknameValue = nickname.querySelector('input').value;
-      const result = await signup(email, password, nicknameValue);
+      const result = await signup(emailValue.value, password, nickname.value);
       if (result.message === '회원가입 성공') {
         alert('회원가입이 완료되었습니다. 로그인해주세요.');
         toggleSignupMode();
         // 입력 필드 초기화
-        emailInput.value = '';
+        emailValue.value = '';
         passwordInput.value = '';
         passwordConfirm.querySelector('input').value = '';
-        nickname.querySelector('input').value = '';
+        nickname.value = '';
       } else {
         alert(result.message || '회원가입 실패');
       }
     } else {
       // 로그인 모드 - email을 uId로 사용
-      const result = await login(email, password); // email을 uId로 전달
+      const result = await login(nickname.value, password); // email을 uId로 전달
       if (result.success) {
         window.location.href = '/map.html';
       } else {
@@ -294,7 +296,7 @@ authForm.addEventListener('submit', async e => {
 signupLink.addEventListener('click', toggleSignupMode);
 
 // 입력 필드 이벤트 리스너 등록
-[emailInput, passwordInput, passwordConfirm.querySelector('input'), nickname.querySelector('input')].forEach(input => {
+[email.querySelector('input'), passwordInput, passwordConfirm.querySelector('input'), nickname].forEach(input => {
   if (input) {
     input.addEventListener('input', updateFormValidation);
     input.addEventListener('blur', updateFormValidation);
