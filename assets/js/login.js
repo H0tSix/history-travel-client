@@ -70,14 +70,14 @@ function validateEmail(email) {
 function updateFormValidation() {
   const isSignupMode = submitButton.textContent === '가입하기';
   let isValid = true;
+  if (emailInput.value) {
+    const isValidEmail = validateEmail(emailInput.value);
+    handleErrorMessage(emailInput, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
+    isValid = isValid && isValidEmail;
+  }
 
   // 회원가입 모드일 때 추가 검증
   if (isSignupMode) {
-    if (emailInput.value) {
-      const isValidEmail = validateEmail(emailInput.value);
-      handleErrorMessage(emailInput, '올바른 이메일 형식이 아닙니다.', !isValidEmail);
-      isValid = isValid && isValidEmail;
-    }
     const passwordValue = passwordInput.value;
     const confirmValue = passwordConfirm.querySelector('input').value;
 
