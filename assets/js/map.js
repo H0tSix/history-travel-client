@@ -9,7 +9,19 @@ const selectDoneButton = document.querySelector('.select-done');
 
 document.addEventListener('DOMContentLoaded', function () {
   // JWT 토큰 체크
-  const token = localStorage.getItem('authToken');
+  let token;
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramToken = urlParams.get('token');
+
+  if (paramToken) {
+    // URL 파라미터로 토큰이 들어온 경우, 이를 로컬스토리지에 저장하고 사용
+    localStorage.setItem('authToken', paramToken);
+    token = paramToken;
+  } else {
+    // URL 파라미터에 토큰이 없는 경우, 로컬스토리지의 토큰 사용
+    token = localStorage.getItem('authToken');
+  }
+
   if (!token) {
     alert('로그인이 필요한 서비스입니다.');
     window.location.href = '/index.html';
