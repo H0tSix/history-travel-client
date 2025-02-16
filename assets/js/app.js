@@ -8,15 +8,8 @@ async function main() {
 
     // // ✅ 서버 API URL (로컬 서버로 변경)
     const url = "http://localhost:3000"; // 로컬 서버로 URL 변경
-    // const formData = new FormData(document.querySelector("#ccForm"));
-    // const text = formData.get("text").trim(); // 사용자가 입력한 위인의 이름 가져오기
-    const text = "이방원"   // 고쳐야 함
-    // // ✅ 검색어가 없으면 요청하지 않음
-    // if (!text) {
-    //   alert("검색할 위인의 이름을 입력하세요!");
-    //   loadingSpinner.style.display = "none";
-    //   return;
-    // }
+    const urlParams = new URLSearchParams(window.location.search);
+    const text = urlParams.get('name');
 
     try {
       const token = localStorage.getItem('authToken');
