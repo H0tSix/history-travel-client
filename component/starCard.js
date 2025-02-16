@@ -32,7 +32,7 @@ export class StarCard {
           <!-- 인물 이름과 팔로우 버튼을 같은 줄에 배치 -->
           <div class="name-follow-container">
             <h3 class="figure-name">${figureData.name}</h3>
-            <button class="follow-btn">팔로우</button>
+            <button class="follow-btn">프로필 보기</button>
           </div>
           <div class="figure-meta">
             <p><strong>국가:</strong> ${country}</p>
@@ -90,19 +90,14 @@ export class StarCard {
         });
 
         const result = await response.json();
-        console.log(result);
 
         if (!response.ok) {
           throw new Error(result.message || '위인 등록 중 오류가 발생했습니다.');
         }
 
         // feedStorage.html로 이동하며 쿼리 파라미터로 데이터 전달
-        const queryParams = new URLSearchParams({
-          name: figure.name,
-          era: year,
-          desc: figure.description,
-        });
-        window.location.href = `./feedStorage.html?${queryParams.toString()}`;
+        const queryParams = new URLSearchParams({ name: figure.name });
+        window.location.href = `./profile.html?${queryParams.toString()}`;
       } catch (error) {
         console.error(error);
         alert('위인 등록 중 오류 발생: ' + error.message);
