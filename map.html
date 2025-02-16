@@ -6,10 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/map.css">
-
-    <script src="./assets/js/map.js" type="module"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2X8KKfHSBUx_GnXnXYQW-DBj1oSkNOZo"></script>
-
+    <link rel="stylesheet" href="./assets/css/star.css">
 </head>
 
 <body>
@@ -25,38 +22,50 @@
 
     <div class="main-content">
         <div class="reel-container">
-            <div class="video-placeholder">
-                <div id="map"></div>
+            <div class="slide-container">
+                <div class="video-placeholder map-slide">
+                    <div id="map"></div>
+                    <div class="selected-country">선택한 국가: 없음</div>
+                    <div class="year-selector">
+                        <select id="year-dropdown">
+                            <option value="0">0년대</option>
+                            <option value="100">100년대</option>
+                            <option value="200">200년대</option>
+                            <option value="300">300년대</option>
+                            <option value="400">400년대</option>
+                            <option value="500">500년대</option>
+                            <option value="600">600년대</option>
+                            <option value="700">700년대</option>
+                            <option value="800">800년대</option>
+                            <option value="900">900년대</option>
+                            <option value="1000">1000년대</option>
+                            <option value="1100">1100년대</option>
+                            <option value="1200">1200년대</option>
+                            <option value="1300">1300년대</option>
+                            <option value="1400">1400년대</option>
+                            <option value="1500">1500년대</option>
+                            <option value="1600">1600년대</option>
+                            <option value="1700">1700년대</option>
+                            <option value="1800">1800년대</option>
+                            <option value="1900">1900년대</option>
+                            <option value="2000">2000년대</option>
+                        </select>
+                    </div>
+                    <button class="select-done" disabled>선택완료</button>
+                </div>
+                <div id="star-content" class="content-slide">
+                    <div class="star-cards-container">
+                        <div class="card-wrapper"></div>
+                    </div>
+                </div>
             </div>
-            <div class="selected-country">선택한 국가: 없음</div>
-            <div class="year-selector">
-                <select id="year-dropdown">
-                    <option value="0">0년대</option>
-                    <option value="100">100년대</option>
-                    <option value="200">200년대</option>
-                    <option value="300">300년대</option>
-                    <option value="400">400년대</option>
-                    <option value="500">500년대</option>
-                    <option value="600">600년대</option>
-                    <option value="700">700년대</option>
-                    <option value="800">800년대</option>
-                    <option value="900">900년대</option>
-                    <option value="1000">1000년대</option>
-                    <option value="1100">1100년대</option>
-                    <option value="1200">1200년대</option>
-                    <option value="1300">1300년대</option>
-                    <option value="1400">1400년대</option>
-                    <option value="1500">1500년대</option>
-                    <option value="1600">1600년대</option>
-                    <option value="1700">1700년대</option>
-                    <option value="1800">1800년대</option>
-                    <option value="1900">1900년대</option>
-                    <option value="2000">2000년대</option>
-                </select>
-            </div>
-
         </div>
     </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2X8KKfHSBUx_GnXnXYQW-DBj1oSkNOZo"></script>
+    <script src="./assets/js/star.js" type="module"></script>
+    <script src="./assets/js/map.js" type="module"></script>
+    <script src="./component/starCard.js" type="module"></script>
 </body>
 
 </html>

@@ -1,6 +1,35 @@
+import { StarContent } from './star.js';
+
 let map;
 let selectedPolygon = null;
+let selectedCountry = null;
+let selectedYear = null;
 let countryPolygons = new Map();
+const selectDoneButton = document.querySelector('.select-done');
+
+document.addEventListener('DOMContentLoaded', function () {
+  // JWT 토큰 체크
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    alert('로그인이 필요한 서비스입니다.');
+    window.location.href = '/index.html';
+    return; // 추가 코드 실행 방지
+  }
+
+  // 기존 코드
+  const yearDropdown = document.getElementById('year-dropdown');
+
+  if (yearDropdown) {
+    yearDropdown.addEventListener('change', function () {
+      selectedYear = this.value;
+      console.log(`선택한 연대: ${this.value}년대`);
+      checkSelectDoneStatus();
+    });
+  }
+
+  // 페이지 로드 시 초기 상태 설정
+  checkSelectDoneStatus();
+});
 
 // 대륙별 중심 좌표와 줌 레벨 정의
 const continentCoordinates = {
@@ -102,8 +131,10 @@ function createPolygon(paths, countryName, polygons) {
 
   // 국가 클릭 시 이벤트
   google.maps.event.addListener(polygon, 'click', function () {
-    if (selectedPolygon) {
-      countryPolygons.get(selectedPolygon).forEach(p => {
+    // 이미 선택된 국가를 다시 클릭한 경우
+    if (selectedPolygon === countryName) {
+      // 선택 효과 제거
+      countryPolygons.get(countryName).forEach(p => {
         p.setOptions({
           strokeColor: '#808080',
           strokeWeight: 1,
@@ -111,24 +142,52 @@ function createPolygon(paths, countryName, polygons) {
           fillOpacity: 0.35,
         });
       });
-    }
 
-    countryPolygons.get(countryName).forEach(p => {
-      p.setOptions({
-        strokeColor: '#833AB4',
-        strokeWeight: 3,
-        fillColor: '#FCB045',
-        fillOpacity: 0.15,
+      // 선택 상태 초기화
+      selectedPolygon = null;
+      selectedCountry = null;
+
+      // 선택한 국가 텍스트 초기화
+      const selectedCountryDiv = document.querySelector('.selected-country');
+      if (selectedCountryDiv) {
+        selectedCountryDiv.textContent = '선택한 국가: 없음';
+      }
+    } else {
+      // 다른 국가가 선택되어 있었던 경우, 이전 선택 효과 제거
+      if (selectedPolygon) {
+        countryPolygons.get(selectedPolygon).forEach(p => {
+          p.setOptions({
+            strokeColor: '#808080',
+            strokeWeight: 1,
+            fillColor: '#FFFFFF',
+            fillOpacity: 0.35,
+          });
+        });
+      }
+
+      // 새로 선택한 국가에 효과 적용
+      countryPolygons.get(countryName).forEach(p => {
+        p.setOptions({
+          strokeColor: '#833AB4',
+          strokeWeight: 3,
+          fillColor: '#FCB045',
+          fillOpacity: 0.15,
+        });
       });
-    });
 
-    selectedPolygon = countryName;
+      // 선택 상태 업데이트
+      selectedPolygon = countryName;
+      selectedCountry = countryName;
 
-    // 선택한 국가 이름 표시
-    const selectedCountryDiv = document.querySelector('.selected-country');
-    if (selectedCountryDiv) {
-      selectedCountryDiv.textContent = `선택한 국가: ${countryName}`;
+      // 선택한 국가 이름 표시
+      const selectedCountryDiv = document.querySelector('.selected-country');
+      if (selectedCountryDiv) {
+        selectedCountryDiv.textContent = `선택한 국가: ${countryName}`;
+      }
     }
+
+    // 선택 완료 버튼 상태 업데이트
+    checkSelectDoneStatus();
   });
 }
 
@@ -167,13 +226,43 @@ function highlightContinentCountries(continent) {
   });
 }
 
+// 선택 완료 버튼 상태 체크 함수
+function checkSelectDoneStatus() {
+  if (selectedCountry && selectedYear && selectedYear !== '0') {
+    selectDoneButton.classList.add('active');
+    selectDoneButton.disabled = false;
+  } else {
+    selectDoneButton.classList.remove('active');
+    selectDoneButton.disabled = true;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   const yearDropdown = document.getElementById('year-dropdown');
 
   if (yearDropdown) {
     yearDropdown.addEventListener('change', function () {
+      selectedYear = this.value;
       console.log(`선택한 연대: ${this.value}년대`);
+      checkSelectDoneStatus();
     });
+  }
+
+  // 페이지 로드 시 초기 상태 설정
+  checkSelectDoneStatus();
+});
+
+// map.js 파일의 selectDoneButton 이벤트 리스너 부분 수정
+selectDoneButton.addEventListener('click', async function () {
+  if (selectedCountry && selectedYear) {
+    const starContentElement = document.getElementById('star-content');
+    const starContent = new StarContent(starContentElement);
+
+    // 지도 슬라이드 업
+    document.querySelector('.map-slide').classList.add('slide-up');
+
+    // 컨텐츠 로드
+    await starContent.loadContent(selectedCountry, selectedYear);
   }
 });
 
