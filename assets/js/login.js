@@ -20,6 +20,27 @@ document.addEventListener('DOMContentLoaded', () => {
   nickname.style.height = '0';
   passwordConfirm.style.opacity = '0';
   nickname.style.opacity = '0';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  const error = urlParams.get('error');
+
+  if (token) {
+    // JWT 토큰 저장
+    localStorage.setItem('authToken', token);
+    // map.html로 리다이렉트
+    window.location.href = '/map.html';
+  } else if (error) {
+    // 에러 처리
+    alert('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
+  }
+});
+
+// 카카오 로그인 버튼에 이벤트 리스너 추가
+document.getElementById('kakaoLogin').addEventListener('click', e => {
+  e.preventDefault();
+  // 카카오 로그인 서버 엔드포인트로 이동
+  window.location.href = 'http://localhost:3000/auth/kakao';
 });
 
 // 에러 메시지 처리 함수
