@@ -177,17 +177,20 @@ body {
 
 .person-card {
   width: 90%;
-  height: 800px;
+  height: auto; /* 고정 높이 제거 */
+  aspect-ratio: 3 / 4; /* 카드 비율 유지 (3:4 비율) */
   background: white;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
   scroll-snap-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  margin: 2vh 0; /* 위아래 여백을 뷰포트 기반으로 조정 */
+  max-height: 80vh; /* 화면 높이에 따라 너무 커지는 것 방지 */
 }
 
 /* 스크롤 관련 스타일 */

@@ -7,6 +7,30 @@ let selectedYear = null;
 let countryPolygons = new Map();
 const selectDoneButton = document.querySelector('.select-done');
 
+document.addEventListener('DOMContentLoaded', function () {
+  // JWT 토큰 체크
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    alert('로그인이 필요한 서비스입니다.');
+    window.location.href = '/index.html';
+    return; // 추가 코드 실행 방지
+  }
+
+  // 기존 코드
+  const yearDropdown = document.getElementById('year-dropdown');
+
+  if (yearDropdown) {
+    yearDropdown.addEventListener('change', function () {
+      selectedYear = this.value;
+      console.log(`선택한 연대: ${this.value}년대`);
+      checkSelectDoneStatus();
+    });
+  }
+
+  // 페이지 로드 시 초기 상태 설정
+  checkSelectDoneStatus();
+});
+
 // 대륙별 중심 좌표와 줌 레벨 정의
 const continentCoordinates = {
   AS: { lat: 35, lng: 105, zoom: 3 },

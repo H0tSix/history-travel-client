@@ -101,36 +101,60 @@ export class StarContent {
   setupScrollListener(country, year) {
     const container = this.container.querySelector('.star-cards-container');
     let startY = 0;
+    let justLoaded = false;
 
-    container.addEventListener('scroll', () => {
-      if (container.scrollTop === 0) {
-        const wheelEvent = e => {
-          if (e.deltaY < 0) {
-            document.querySelector('.map-slide').classList.remove('slide-up');
-            this.container.classList.remove('active');
-            container.removeEventListener('wheel', wheelEvent);
-          }
-        };
-        container.addEventListener('wheel', wheelEvent);
-      }
-
-      if (this.isLoading) return;
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      if (scrollHeight - scrollTop <= clientHeight + 100) {
-        this.loadMoreCards(country, year);
+    // wheel 이벤트: 위로 스크롤하면 지도 복귀, 아래로 스크롤하면 카드 추가
+    container.addEventListener('wheel', async e => {
+      if (e.deltaY < 0 && container.scrollTop <= 0) {
+        // 위로 스크롤 시 지도 화면으로 복귀
+        document.querySelector('.map-slide').classList.remove('slide-up');
+        this.container.classList.remove('active');
+      } else if (e.deltaY > 0) {
+        // 아래로 스크롤: 컨테이너가 스크롤 가능하지 않거나 하단에 도달했을 때 카드 추가
+        if (container.scrollHeight <= container.clientHeight || container.scrollTop + container.clientHeight >= container.scrollHeight - 50) {
+          if (this.isLoading || justLoaded) return;
+          justLoaded = true;
+          await this.loadMoreCards(country, year);
+          setTimeout(() => {
+            justLoaded = false;
+          }, 500);
+        }
       }
     });
 
+    // 스크롤 이벤트: 스크롤바가 활성화된 경우 하단 도달 시 카드 추가
+    container.addEventListener('scroll', async () => {
+      if (this.isLoading || justLoaded) return;
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        justLoaded = true;
+        await this.loadMoreCards(country, year);
+        setTimeout(() => {
+          justLoaded = false;
+        }, 500);
+      }
+    });
+
+    // 터치 이벤트: 위로 올리면 지도, 아래로 내리면 카드 추가
     container.addEventListener('touchstart', e => {
       startY = e.touches[0].clientY;
     });
-
-    container.addEventListener('touchmove', e => {
-      if (container.scrollTop === 0) {
-        const currentY = e.touches[0].clientY;
-        if (currentY - startY > 50) {
-          document.querySelector('.map-slide').classList.remove('slide-up');
-          this.container.classList.remove('active');
+    container.addEventListener('touchmove', async e => {
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - startY;
+      if (diff > 50 && container.scrollTop <= 0) {
+        // 손가락을 아래로 당기면(화면이 내려가면) 지도로 복귀
+        document.querySelector('.map-slide').classList.remove('slide-up');
+        this.container.classList.remove('active');
+      } else if (diff < -50) {
+        // 손가락을 위로 올리면(화면이 올라가면) 카드 추가
+        if (container.scrollHeight <= container.clientHeight || container.scrollTop + container.clientHeight >= container.scrollHeight - 50) {
+          if (this.isLoading || justLoaded) return;
+          justLoaded = true;
+          await this.loadMoreCards(country, year);
+          setTimeout(() => {
+            justLoaded = false;
+          }, 500);
         }
       }
     });

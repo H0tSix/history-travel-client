@@ -7,7 +7,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/login.css">
   <script src="./assets/js/login.js" type="module"></script>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+    integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka"
+    crossorigin="anonymous"></script>
+  <script>
+    Kakao.init('1c7c4e2139f83935b82cc3efe5ea2d82');
+    console.log(Kakao.isInitialized());
 
+    function loginWithKakao() {
+      Kakao.Auth.authorize({
+        redirectUri: 'http://localhost:3000/auth/kakao/callback',
+      });
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stargram</title>
@@ -38,12 +50,12 @@
         <button type="submit" class="login-button" id="submitButton">로그인</button>
       </form>
       <div class="or-divider" id="orDivider">또는</div>
-      <a href="#" class="social-login" id="kakaoLogin">
+      <a href="javascript:loginWithKakao()" class="social-login" id="kakaoLogin">
         Kakao로 로그인
       </a>
     </div>
     <div class="signup-box" id="signupBox">
-      계정이 없으신가요? <a href="#" id="signupLink">가입하기</a>
+      계정이 없으신가요? <a href="" id="signupLink">가입하기</a>
     </div>
     <footer class="footer">
       <div class="footer-links">
