@@ -1,18 +1,23 @@
 const commentForm = document.querySelector("#comment-form");
 const commentInput = document.querySelector(".comment-input");
+const token = localStorage.getItem("authToken");
+const url = "http://127.0.0.1:3000";
+
 document.addEventListener("DOMContentLoaded", async () => {
   await loadFeedData();
   loadFeedCommentData();
 });
 
-async function loadFeedData(id = 1) {
-  const url = "http://127.0.0.1:3000";
+async function loadFeedData() {
+  const id = sessionStorage.getItem("id") || 1;
 
+  console.log(id);
+  console.log(token);
   const response = await fetch(`${url}/feed/getFeed?id=${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   if (!response.ok) {
@@ -23,14 +28,13 @@ async function loadFeedData(id = 1) {
   const { sId, star_name, profile_image, USER } = STAR;
   const { id: userId, uId } = USER;
 
-  const profile_image2 = "./assets/images/00_img.jpeg";
-
   document.querySelectorAll(".profile-name").forEach((element) => {
     element.textContent = star_name;
   });
-  document.querySelector("#profile-img").src = profile_image2;
+
+  document.querySelector("#profile-img").src = profile_image;
   document.querySelector("#feed-text").textContent = feed_text;
-  document.querySelector("#feed-img").src = profile_image2;
+  document.querySelector("#feed-img").src = feed_image;
 
   commentForm.dataset.uid = userId;
   commentForm.dataset.fid = fId;
@@ -44,9 +48,13 @@ async function loadFeedCommentData() {
   if (!fId) return;
 
   try {
-    const response = await fetch(
-      `http://127.0.0.1:3000/feed/getComment?fId=${fId}`
-    );
+    const response = await fetch(`${url}/feed/getComment?fId=${fId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const comments = await response.json();
 
     if (!response.ok) {
@@ -58,34 +66,36 @@ async function loadFeedCommentData() {
 
     const user = commentForm.dataset.user;
     const star = commentForm.dataset.star;
+    const profile_image1 = "./assets/images/user_profile.png";
+    const profile_image2 = "./assets/images/00_img.jpeg";
     const commentMap = new Map();
 
-    // 댓글 데이터를 순서대로 정렬 (부모 댓글 먼저, 그다음 답글)
     comments.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
-    // 댓글을 렌더링
     comments.forEach(({ fcId, coment, parent_id }) => {
       let newComment = document.createElement("div");
 
       if (parent_id === null) {
-        // 부모 댓글
         newComment.classList.add("comment");
-        newComment.innerHTML = `<strong>${user}</strong> <span>${coment}</span>`;
+        newComment.innerHTML = `
+          <img src="${profile_image1}" alt="Profile" class="profile-img">
+          <strong>${user}</strong> <span>${coment}</span>
+        `;
 
-        // 부모 댓글을 commentMap에 저장
         commentMap.set(fcId, newComment);
         commentSection.appendChild(newComment);
       } else {
-        // 답글 (부모 댓글 바로 아래에 추가)
         newComment.classList.add("reply");
-        newComment.innerHTML = `<strong>${star}</strong> <span>${coment}</span>`;
+        newComment.innerHTML = `
+          <img src="${profile_image2}" alt="Profile" class="profile-img">
+          <strong>${star}</strong> <span>${coment}</span>
+        `;
 
-        // 부모 댓글 아래에 답글 추가
         const parentComment = commentMap.get(parent_id);
         if (parentComment) {
-          parentComment.after(newComment); // 부모 댓글 다음에 배치
+          parentComment.after(newComment);
         } else {
-          commentSection.appendChild(newComment); // 혹시 부모 댓글이 없으면 일반 추가
+          commentSection.appendChild(newComment);
         }
       }
     });
@@ -96,16 +106,14 @@ async function loadFeedCommentData() {
 
 async function feedCommentChatAdd(fcId, fId, uId, sId, comment, star) {
   try {
-    const response = await fetch("http://127.0.0.1:3000/feed/addCommetChat", {
+    const response = await fetch(`${url}/feed/addCommetChat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ parent_id: fcId, fId, uId, sId, comment, star }),
     });
-
-    // console.log(await response.json());
 
     if (!response.ok) {
       throw new Error("AI 답글 생성 실패");
@@ -131,11 +139,11 @@ commentForm.addEventListener("submit", async (event) => {
   const star = commentForm.dataset.star;
 
   try {
-    const response = await fetch("http://127.0.0.1:3000/feed/addComment", {
+    const response = await fetch(`${url}/feed/addComment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ coment, uId, fId, sId }),
     });
@@ -170,3 +178,7 @@ function showLoadingMask() {
 function hideLoadingMask() {
   document.getElementById("loading-mask").style.display = "none";
 }
+
+document.querySelector("#back-btn").addEventListener("click", () => {
+  window.history.back();
+});
