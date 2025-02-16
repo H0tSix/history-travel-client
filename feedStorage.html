@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>탐색 페이지</title>
     <link rel="stylesheet" href="./assets/css/feedStorage.css" />
@@ -64,20 +64,24 @@
         const container = document.getElementById("gridContainer");
         container.innerHTML = "";
 
-        feeds.reverse().forEach((feed) => {
-          const item = document.createElement("div");
-          item.classList.add("grid-item");
+        // 최대 60개의 게시물만 표시
+        const limitedFeeds = feeds.reverse().slice(0, 60);  // 최신 게시물부터 60개만 선택
 
-          item.innerHTML = `
-                    <a href="http://127.0.0.1:5500/history-travel-client/starFeed.html?fId=${feed.fId}">
-                        <img src="${feed.imageUrl}" alt="게시물 이미지">
-                    </a>
-                    <p>${feed.feed_text}</p>
-                `;
+        limitedFeeds.forEach((feed) => {
+            const item = document.createElement("div");
+            item.classList.add("grid-item");
 
-          container.appendChild(item);
+            item.innerHTML = `
+            <a href="./starFeed.html?fId=${feed.fId}">
+                <img src="${feed.imageUrl}" alt="게시물 이미지">
+            </a>
+            <p>${feed.feed_text}</p>
+            `;
+
+            container.appendChild(item);
         });
       }
+
 
       function searchPosts() {
         let input = document.getElementById("searchInput").value.toLowerCase();

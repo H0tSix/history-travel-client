@@ -10,7 +10,7 @@ async function main() {
     const url = "http://localhost:3000"; // 로컬 서버로 URL 변경
     // const formData = new FormData(document.querySelector("#ccForm"));
     // const text = formData.get("text").trim(); // 사용자가 입력한 위인의 이름 가져오기
-    const text = "선덕여왕"   // 고쳐야 함
+    const text = "이방원"   // 고쳐야 함
     // // ✅ 검색어가 없으면 요청하지 않음
     // if (!text) {
     //   alert("검색할 위인의 이름을 입력하세요!");
