@@ -94,7 +94,7 @@ async function main() {
         achievementWrapper.classList.add("achievement-item", "text-center");
 
         const achievementTitle = document.createElement("h5");
-        achievementTitle.textContent = `${index + 1}. ${achievement || "업적 정보 없음"}`;
+        achievementTitle.textContent = `${achievement || "업적 정보 없음"}`;
 
         
         const imageTag = document.createElement("img");

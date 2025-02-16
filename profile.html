@@ -1,4 +1,3 @@
-<!-- 수정 후 profile.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,16 +17,15 @@
 </head>
 <body>
   <!-- 스타그램 로고 -->
-  <div class="container d-flex align-items-center" style="padding-left: 20px;">
-    <h1 class="pacifico-regular">Stargram</h1>
+  <div class="container text-center mt-3">
+    <h1 class="pacifico-regular logo">Stargram</h1>
   </div>
-
 
   <hr class="my-0" />
   
   <main class="container mt-4">
     <!-- 프로필 컨테이너 -->
-    <div class="profile-box d-flex align-items-center">
+    <div class="profile-box d-flex align-items-center justify-content-between">
       <!-- 프로필 이미지 -->
       <div class="profile-image-container position-relative">
         <img src="./assets/images/default-profile.png" id="profile-image" alt="Profile Picture" class="rounded-circle profile-img" />
@@ -36,36 +34,55 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      
+  
       <!-- 프로필 정보 -->
-      <div class="profile-info ms-4">
-        <div class="d-flex align-items-center">
-          <h2 id="profile-name" class="fw-bold">위인의 이름 불러오는 중...</h2>  <!-- ✅ Supabase에서 데이터 표시 -->
-          <button class="btn btn-primary btn-follow ms-3">팔로우</button>
-          <button class="btn btn-light btn-message ms-2">메시지 보내기</button>
-        </div>
-        <p id="profile-desc" class="text-muted">위인에 대한 설명</p>
-
+      <div class="profile-info ms-4 flex-grow-1">
+        <h2 id="profile-name" class="fw-bold">위인의 이름 불러오는 중...</h2>
+  
         <!-- 프로필 통계 -->
-        <div class="profile-stats d-flex gap-3">
-          <span><strong id="post-count">7</strong> 게시물</span>
-          <span><strong id="follower-count">7</strong> 팔로워</span>
-          <span><strong id="following-count">7</strong> 팔로잉</span>
+        <div class="profile-stats d-flex gap-3 mt-2">
+          <div class="text-center">
+            <strong id="post-count">7</strong>
+            <p>게시물</p>
+          </div>
+          <div class="text-center">
+            <strong id="follower-count">7</strong>
+            <p>팔로워</p>
+          </div>
+          <div class="text-center">
+            <strong id="following-count">7</strong>
+            <p>팔로잉</p>
+          </div>
         </div>
       </div>
+  
+      <!-- 버튼 영역 -->
+      <div class="profile-actions d-flex flex-column gap-2 ms-4">
+        <button class="btn btn-primary btn-follow btn-sm" style="min-width: 120px;">팔로우</button>
+        <button class="btn btn-light btn-message btn-sm" style="min-width: 120px;">메시지 보내기</button>
+      </div>      
     </div>
+  </main>
+  
     
     <hr>
 
     <!-- 게시물 그리드 -->
-    <div id="image-container" class="d-flex flex-wrap gap-2">
+    <div id="image-container" class="d-grid grid-template-columns-3 gap-2">
       <!-- JavaScript에서 동적으로 게시물 이미지 추가 -->
     </div>
   </main>
 
+  <div class="nav-bar">
+    <a href="#">🏠</a>
+    <a href="./feedStorage.html">🔍</a>
+    <a href="#">➕</a>
+    <a href="#">💬</a>
+    <a href="#">👤</a>
+  </div>
+
   <!-- Bootstrap JS 추가 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="./assets/js/app.js"></script>
-
 </body>
 </html>
