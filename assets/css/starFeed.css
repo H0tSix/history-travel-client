@@ -1,6 +1,7 @@
 html,
 body {
   height: 100%;
+  background-color: #fafafa;
 }
 
 .wrapper {
@@ -8,7 +9,12 @@ body {
   flex-direction: column;
   min-height: 100vh; /* 전체 뷰포트 높이 확보 */
 }
-
+/* 네비게이션 스타일 */
+.navbar {
+  background-color: white;
+  padding: 10px 0;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
 .content {
   flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
 }
@@ -81,12 +87,108 @@ body {
   border-top: 1px solid #ddd;
 }
 
+/* 댓글 스타일 */
 .comment {
-  padding: 8px 0;
+  display: flex;
+  align-items: center; /* 프로필 이미지와 텍스트를 수직 중앙 정렬 */
+  padding: 10px 5px;
   font-size: 14px;
+  gap: 10px; /* 이미지와 텍스트 사이 간격 */
 }
 
-.reply {
-  padding-left: 20px;
+.comment img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.comment-content {
+  display: flex;
+  align-items: center; /* 닉네임과 텍스트도 중앙 정렬 */
+  gap: 5px;
+}
+
+.comment strong {
   font-size: 14px;
+  color: #333;
+}
+
+.comment span {
+  font-size: 14px;
+  color: #555;
+}
+
+/* 답글 스타일 */
+.reply {
+  display: flex;
+  align-items: center; /* 프로필 이미지와 텍스트를 수직 중앙 정렬 */
+  padding: 5px;
+  font-size: 14px;
+  margin-left: 45px; /* 들여쓰기 효과 */
+  gap: 8px;
+}
+
+.reply img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.reply-content {
+  display: flex;
+  align-items: center; /* 닉네임과 텍스트도 중앙 정렬 */
+  gap: 5px;
+}
+
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 9999;
+  display: none; /* 기본적으로 숨김 */
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pacifico-regular {
+  font-family: "Pacifico", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+}
+
+/* 피드 카드 스타일 */
+#feed-container {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  padding-bottom: 10px;
 }
