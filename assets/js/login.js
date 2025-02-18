@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // JWT 토큰 저장
     localStorage.setItem('authToken', token);
     // map.html로 리다이렉트
-    window.location.href = '/map.html';
+    window.location.href = `../map.html`;
   } else if (error) {
     // 에러 처리
     alert('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
@@ -281,7 +281,7 @@ authForm.addEventListener('submit', async e => {
       // 로그인 모드 - email을 uId로 사용
       const result = await login(nickname.value, password); // email을 uId로 전달
       if (result.success) {
-        window.location.href = '/map.html';
+        window.location.href = './map.html';
       } else {
         alert(result.message || '로그인 실패');
       }
